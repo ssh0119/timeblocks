@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Timeblocks',
       theme: theme,
-      home: TimeblocksListScreen(),
+      home: const TimeblocksListScreen(),
     );
   }
 }
