@@ -8,7 +8,7 @@ class TimeblocksListScreen extends StatelessWidget {
   void _pushNewTimeblockScreen(context) {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (ctx) => const NewTimeblockScreen(),
+        builder: (ctx) => NewTimeblockScreen(),
       ),
     );
   }

@@ -1,8 +1,8 @@
 import 'package:timeblocks/models/interval.dart';
 
 class Timeblock {
-  Timeblock({required this.title}) : intervals = [];
+  Timeblock({required this.name}) : intervals = [];
 
-  final String title;
+  final String name;
   final List<Interval> intervals;
 }

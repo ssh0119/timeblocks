@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class FormNotifier extends StateNotifier<Map> {
-  FormNotifier() : super({});
+  FormNotifier() : super({'isLoading': false});
 
   void updateFormValue(String formField, dynamic formValue) {
     state = {...state, formField: formValue};
@@ -9,6 +9,10 @@ class FormNotifier extends StateNotifier<Map> {
 
   void deleteFormValue(String formField) {
     state = state.remove(formField); 
+  }
+
+  dynamic getFormValue(String formField) {
+    return state[formField];
   }
 }
 
