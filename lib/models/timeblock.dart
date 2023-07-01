@@ -10,7 +10,7 @@ class Timeblock {
     return intervals.map((interval) => interval.toString()).join();
   }
 
-  Map toMap() {
+  Map<String, Object?> toMap() {
     return {'name': name, 'intervals': joinedIntervals};
   }
 }
