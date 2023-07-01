@@ -4,19 +4,18 @@ import 'package:sqflite/sqlite_api.dart';
 
 mixin Persistable {
   _onCreate(Database db, int version) async {
-    await db.execute("CREATE TABLE Test (id INTEGER PRIMARY KEY, value TEXT)");
-  }
-
-  _onUpgrade(Database db, int oldVersion, int newVersion) async {
     await db.execute('''
         CREATE TABLE IF NOT EXISTS timeblocks (
+          id INTEGER PRIMARY KEY,
           name TEXT NOT NULL,
-          intervals TEXT
+          intervals TEXT,
+          created_at TEXT NOT NULL,
+          updated_at TEXT NOT NULL
         );
       ''');
   }
 
-  Database get database async {
+  Future<Database> get database async {
     var databasesPath = await sql.getDatabasesPath();
     var dbPath = path.join(databasesPath, 'timeblocks_app.db');
     var db = await sql.openDatabase(dbPath,
@@ -26,6 +25,15 @@ mixin Persistable {
 
   Future<int> insertRecord(
       String tableName, Map<String, Object?> recordMap) async {
-    return await database.insert(tableName, recordMap);
+    final nowIso8601 = DateTime.now().toIso8601String();
+
+    var recordWithDates = {
+      ...recordMap,
+      'created_at': nowIso8601,
+      'updated_at': nowIso8601
+    };
+
+    var db = await database;
+    return await db.insert(tableName, recordWithDates);
   }
 }
