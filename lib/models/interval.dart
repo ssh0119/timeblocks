@@ -9,4 +9,9 @@ class Interval {
 
   final TimeType timeType;
   final int lengthInSeconds;
+
+  @override
+  String toString() {
+    return '${timeType.name};$lengthInSeconds;';
+  }
 }

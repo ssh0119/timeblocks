@@ -5,4 +5,12 @@ class Timeblock {
 
   final String name;
   final List<Interval> intervals;
+
+  String get joinedIntervals {
+    return intervals.map((interval) => interval.toString()).join();
+  }
+
+  Map toMap() {
+    return {'name': name, 'intervals': joinedIntervals};
+  }
 }
