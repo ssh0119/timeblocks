@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:timeblocks/providers/form_provider.dart';
 import 'package:timeblocks/validators/timeblock_validator.dart';
 import 'package:timeblocks/models/timeblock.dart';
+import 'package:timeblocks/repositories/timeblocks.dart';
 
 class NewTimeblockScreen extends ConsumerWidget {
   final _formKey = GlobalKey<FormState>();
@@ -14,7 +15,7 @@ class NewTimeblockScreen extends ConsumerWidget {
     ref.read(formProvider.notifier).updateFormValue(fieldName, fieldValue);
   }
 
-  void _saveTimeblock(WidgetRef ref) {
+  void _saveTimeblock(WidgetRef ref) async {
     if (_formKey.currentState!.validate()) {
       _updateFormProvider(ref, 'isLoading', true);
       _formKey.currentState!.save();
@@ -22,8 +23,9 @@ class NewTimeblockScreen extends ConsumerWidget {
       final form = ref.watch(formProvider);
       Timeblock newTimeblock = Timeblock(name: form['name']);
 
-      print('Implement TimeBlockRepository + DatabaseProvider');
-      print('The name of the timeblock is ${newTimeblock.name}');
+      int id = await TimeblocksRepository().addTimeblock(newTimeblock);
+      print('inserted with id $id');
+      _updateFormProvider(ref, 'isLoading', false);
     }
   }
 
