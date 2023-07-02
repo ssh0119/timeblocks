@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:timeblocks/providers/form_provider.dart';
 import 'package:timeblocks/validators/timeblock_validator.dart';
 import 'package:timeblocks/models/timeblock.dart';
-import 'package:timeblocks/repositories/timeblocks.dart';
+import 'package:timeblocks/providers/timeblocks_provider.dart';
 
 class NewTimeblockScreen extends ConsumerWidget {
   final _formKey = GlobalKey<FormState>();
@@ -15,7 +15,7 @@ class NewTimeblockScreen extends ConsumerWidget {
     ref.read(formProvider.notifier).updateFormValue(fieldName, fieldValue);
   }
 
-  void _saveTimeblock(WidgetRef ref) async {
+  void _saveTimeblock(BuildContext context, WidgetRef ref) async {
     if (_formKey.currentState!.validate()) {
       _updateFormProvider(ref, 'isLoading', true);
       _formKey.currentState!.save();
@@ -23,9 +23,10 @@ class NewTimeblockScreen extends ConsumerWidget {
       final form = ref.watch(formProvider);
       Timeblock newTimeblock = Timeblock(name: form['name']);
 
-      int id = await TimeblocksRepository().addTimeblock(newTimeblock);
-      print('inserted with id $id');
+      await ref.read(timeblocksProvider.notifier).insertTimeblock(newTimeblock);
       _updateFormProvider(ref, 'isLoading', false);
+
+      if (context.mounted) Navigator.of(context).pop();
     }
   }
 
@@ -68,7 +69,7 @@ class NewTimeblockScreen extends ConsumerWidget {
                     onPressed: form['isLoading']
                         ? null
                         : () {
-                            _saveTimeblock(ref);
+                            _saveTimeblock(context, ref);
                           },
                     child: form['isLoading']
                         ? const SizedBox(
