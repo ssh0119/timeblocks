@@ -6,7 +6,6 @@ mixin Persistable {
   _onCreate(Database db, int version) async {
     await db.execute('''
         CREATE TABLE IF NOT EXISTS timeblocks (
-          id INTEGER PRIMARY KEY,
           name TEXT NOT NULL,
           intervals TEXT,
           created_at TEXT NOT NULL,
@@ -18,8 +17,11 @@ mixin Persistable {
   Future<Database> get database async {
     var databasesPath = await sql.getDatabasesPath();
     var dbPath = path.join(databasesPath, 'timeblocks_app.db');
-    var db = await sql.openDatabase(dbPath,
-        onCreate: _onCreate, onUpgrade: _onUpgrade);
+    var db = await sql.openDatabase(
+      dbPath,
+      version: 1,
+      onCreate: _onCreate,
+    );
     return db;
   }
 
@@ -35,5 +37,10 @@ mixin Persistable {
 
     var db = await database;
     return await db.insert(tableName, recordWithDates);
+  }
+
+  Future<List<Map>> fetchAll(String tableName) async {
+    var db = await database;
+    return db.rawQuery('SELECT * FROM $tableName;');
   }
 }

@@ -1,8 +1,13 @@
 import 'package:timeblocks/models/interval.dart';
 
 class Timeblock {
-  Timeblock({required this.name}) : intervals = [];
+  Timeblock({required this.name})
+      : intervals = [],
+        id = null;
 
+  Timeblock.fromDB({required this.name, required this.id}) : intervals = [];
+
+  final int? id;
   final String name;
   final List<Interval> intervals;
 
