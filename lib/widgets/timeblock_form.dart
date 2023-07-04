@@ -5,6 +5,9 @@ import 'package:timeblocks/models/timeblock.dart';
 import 'package:timeblocks/providers/form_provider.dart';
 import 'package:timeblocks/providers/timeblocks_provider.dart';
 import 'package:timeblocks/validators/timeblock_validator.dart';
+import 'package:timeblocks/widgets/interval_input.dart';
+
+const initialIntervalSettings = {'hours': 10, 'minutes': 24, 'seconds': 30};
 
 class TimeblockForm extends ConsumerStatefulWidget {
   const TimeblockForm({super.key});
@@ -15,7 +18,7 @@ class TimeblockForm extends ConsumerStatefulWidget {
 
 class _TimeblockFormState extends ConsumerState<TimeblockForm> {
   final _formKey = GlobalKey<FormState>();
-  // var intervalInputs = [];
+  var intervalInputs = [initialIntervalSettings];
 
   _updateFormProvider(WidgetRef ref, String fieldName, dynamic fieldValue) {
     ref.read(formProvider.notifier).updateFormValue(fieldName, fieldValue);
@@ -54,6 +57,13 @@ class _TimeblockFormState extends ConsumerState<TimeblockForm> {
               _updateFormProvider(ref, 'name', value);
             },
           ),
+
+          Column(
+            children: intervalInputs.map((intervalSetting) {
+              return IntervalInput(intervalSetting: intervalSetting);
+            }).toList(),
+          ),
+
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
