@@ -57,13 +57,14 @@ class _TimeblockFormState extends ConsumerState<TimeblockForm> {
               _updateFormProvider(ref, 'name', value);
             },
           ),
-
           Column(
-            children: intervalInputs.map((intervalSetting) {
-              return IntervalInput(intervalSetting: intervalSetting);
+            children: intervalInputs.asMap().keys.toList().map((index) {
+              return IntervalInput(
+                intervalSetting: intervalInputs[index],
+                index: index,
+              );
             }).toList(),
           ),
-
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
