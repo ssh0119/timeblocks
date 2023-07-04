@@ -9,17 +9,18 @@ class TimeblocksListScreen extends ConsumerStatefulWidget {
   const TimeblocksListScreen({super.key});
 
   @override
-  ConsumerState<TimeblocksListScreen> createState() => _TimeblocksListScreenState();
+  ConsumerState<TimeblocksListScreen> createState() =>
+      _TimeblocksListScreenState();
 }
 
 class _TimeblocksListScreenState extends ConsumerState<TimeblocksListScreen> {
-
   @override
   void initState() {
     ref.read(timeblocksProvider.notifier).fetchPersisted();
 
     super.initState();
   }
+
   void _pushNewTimeblockScreen(context) {
     Navigator.of(context).push(
       MaterialPageRoute(
@@ -43,8 +44,13 @@ class _TimeblocksListScreenState extends ConsumerState<TimeblocksListScreen> {
     if (timeblocks.isNotEmpty) {
       content = ListView.builder(
         itemCount: timeblocks.length,
-        itemBuilder: (ctx, index) => ListTile(
-          title: Text(timeblocks[index].name),
+        itemBuilder: (ctx, index) => Dismissible(
+          onDimissed: () {
+          },
+          key: ValueKey(timeblocks[index].id),
+          child: ListTile(
+            title: Text(timeblocks[index].name),
+          ),
         ),
       );
     }
