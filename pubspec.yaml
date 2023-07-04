@@ -40,6 +40,7 @@ dependencies:
   sqflite: ^2.2.8+4
   path: ^1.8.3
   uuid: ^3.0.7
+  numberpicker: ^2.1.2
 
 dev_dependencies:
   flutter_test:

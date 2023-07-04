@@ -34,13 +34,7 @@ class _TimeblocksListScreenState extends ConsumerState<TimeblocksListScreen> {
   build(BuildContext context) {
     List<Timeblock> timeblocks = ref.watch(timeblocksProvider);
 
-    Widget content = Text(
-      'No timeblocks added yet...',
-      style: Theme.of(context)
-          .textTheme
-          .titleMedium!
-          .copyWith(color: Theme.of(context).colorScheme.onBackground),
-    );
+    Widget content = Text('No timeblocks added yet...');
 
     if (timeblocks.isNotEmpty) {
       content = ListView.builder(
