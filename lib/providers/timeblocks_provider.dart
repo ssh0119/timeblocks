@@ -23,6 +23,15 @@ class TimeblocksNotifier extends StateNotifier<List<Timeblock>> {
       );
     }).toList();
   }
+
+  Future<Timeblock> deleteTimeblock(Timeblock timeblock) async {
+    print('Deleting timeblock ${timeblock.id}');
+    await TimeblocksRepository().deleteRecord(tableName, timeblock.id);
+
+    state = state.where((tb) => tb.id != timeblock.id).toList();
+
+    return timeblock;
+  }
 }
 
 final timeblocksProvider =
