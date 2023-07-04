@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:timeblocks/screens/new_timeblock_screen.dart';
 import 'package:timeblocks/providers/timeblocks_provider.dart';
 import 'package:timeblocks/models/timeblock.dart';
+import 'package:timeblocks/widgets/timeblock_list_item.dart';
 
 class TimeblocksListScreen extends ConsumerStatefulWidget {
   const TimeblocksListScreen({super.key});
@@ -44,13 +45,8 @@ class _TimeblocksListScreenState extends ConsumerState<TimeblocksListScreen> {
     if (timeblocks.isNotEmpty) {
       content = ListView.builder(
         itemCount: timeblocks.length,
-        itemBuilder: (ctx, index) => Dismissible(
-          onDimissed: () {
-          },
-          key: ValueKey(timeblocks[index].id),
-          child: ListTile(
-            title: Text(timeblocks[index].name),
-          ),
+        itemBuilder: (ctx, index) => TimeblockListItem(
+          timeblock: timeblocks[index],
         ),
       );
     }
