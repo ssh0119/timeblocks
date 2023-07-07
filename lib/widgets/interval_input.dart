@@ -27,6 +27,16 @@ class _IntervalInputState extends State<IntervalInput> {
     super.initState();
   }
 
+  void _setIntervalType() {
+    setState(() {
+      if (_currentType == 'active') {
+        _currentType = 'inactive';
+      } else {
+        _currentType = 'active';
+      }
+    });
+  }
+
   @override
   Widget build(context) {
     var activeColors = const [
@@ -34,20 +44,39 @@ class _IntervalInputState extends State<IntervalInput> {
       Color.fromRGBO(25, 210, 28, 0.0)
     ];
 
+    var inactiveColors = const [
+      Color.fromRGBO(241, 163, 162, 0.8),
+      Color.fromRGBO(242, 84, 82, 0.8)
+    ];
+
     return Container(
+      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 0),
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(
           Radius.circular(20),
         ),
         gradient: LinearGradient(
-          colors: activeColors,
+          colors: _currentType == 'active' ? activeColors : inactiveColors,
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
       ),
       child: Column(
         children: [
-          Text(_currentType),
+          ElevatedButton(
+              onPressed: _setIntervalType,
+              child: Text(_currentType),
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.resolveWith<Color?>(
+                  (Set<MaterialState> states) {
+                    if (_currentType == 'active') {
+                    return Colors.greenAccent;
+                    } else {
+                      return Colors.redAccent;
+                    }
+                  },
+                ),
+              )),
           Padding(
             padding: EdgeInsets.symmetric(vertical: 12, horizontal: 60),
             child: Row(
