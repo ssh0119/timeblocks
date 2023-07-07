@@ -16,6 +16,7 @@ class _IntervalInputState extends State<IntervalInput> {
   late int _currentHours;
   late int _currentMinutes;
   late int _currentSeconds;
+  String _currentType = 'active';
 
   @override
   void initState() {
@@ -28,60 +29,77 @@ class _IntervalInputState extends State<IntervalInput> {
 
   @override
   Widget build(context) {
-    return Column(
-      children: [
-        Text('Active'),
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: 12, horizontal: 60),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: Column(
-                  children: [
-                    NumberPicker(
-                      value: _currentHours,
-                      minValue: 0,
-                      maxValue: 60,
-                      onChanged: (value) =>
-                          setState(() => _currentHours = value),
-                    ),
-                    const Text('Hours'),
-                  ],
-                ),
-              ),
-              Expanded(
-                child: Column(
-                  children: [
-                    NumberPicker(
-                      value: _currentMinutes,
-                      minValue: 0,
-                      maxValue: 60,
-                      onChanged: (value) =>
-                          setState(() => _currentMinutes = value),
-                    ),
-                    const Text('Minutes'),
-                  ],
-                ),
-              ),
-              Expanded(
-                child: Column(
-                  children: [
-                    NumberPicker(
-                      value: _currentSeconds,
-                      minValue: 0,
-                      maxValue: 60,
-                      onChanged: (value) =>
-                          setState(() => _currentSeconds = value),
-                    ),
-                    const Text('Seconds'),
-                  ],
-                ),
-              ),
-            ],
-          ),
+    var activeColors = const [
+      Color.fromRGBO(105, 208, 206, 0.8),
+      Color.fromRGBO(25, 210, 28, 0.0)
+    ];
+
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.all(
+          Radius.circular(20),
         ),
-      ],
+        gradient: LinearGradient(
+          colors: activeColors,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+      ),
+      child: Column(
+        children: [
+          Text(_currentType),
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 12, horizontal: 60),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Column(
+                    children: [
+                      NumberPicker(
+                        value: _currentHours,
+                        minValue: 0,
+                        maxValue: 60,
+                        onChanged: (value) =>
+                            setState(() => _currentHours = value),
+                      ),
+                      const Text('Hours'),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Column(
+                    children: [
+                      NumberPicker(
+                        value: _currentMinutes,
+                        minValue: 0,
+                        maxValue: 60,
+                        onChanged: (value) =>
+                            setState(() => _currentMinutes = value),
+                      ),
+                      const Text('Minutes'),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Column(
+                    children: [
+                      NumberPicker(
+                        value: _currentSeconds,
+                        minValue: 0,
+                        maxValue: 60,
+                        onChanged: (value) =>
+                            setState(() => _currentSeconds = value),
+                      ),
+                      const Text('Seconds'),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
