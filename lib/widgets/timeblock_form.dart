@@ -7,7 +7,7 @@ import 'package:timeblocks/providers/timeblocks_provider.dart';
 import 'package:timeblocks/validators/timeblock_validator.dart';
 import 'package:timeblocks/widgets/interval_input.dart';
 
-const initialIntervalSettings = {'hours': 10, 'minutes': 24, 'seconds': 30};
+const initialIntervalSettings = {'hours': 0, 'minutes': 0, 'seconds': 0};
 
 class TimeblockForm extends ConsumerStatefulWidget {
   const TimeblockForm({super.key});
@@ -39,60 +39,88 @@ class _TimeblockFormState extends ConsumerState<TimeblockForm> {
     }
   }
 
+  void _addNewInterval() {
+    setState(() {
+      intervalInputs.add(initialIntervalSettings);
+    });
+  }
+
   @override
   Widget build(context) {
     final form = ref.watch(formProvider);
 
     return Form(
       key: _formKey,
-      child: Column(
-        children: [
-          TextFormField(
-            maxLength: 50,
-            decoration: const InputDecoration(
-              label: Text('Name'),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical: 12,
+                horizontal: 0,
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextFormField(
+                      maxLength: 50,
+                      decoration: const InputDecoration(
+                        label: Text('Name'),
+                      ),
+                      validator: (value) =>
+                          TimeblockValidator.isValidName(value),
+                      onSaved: (value) {
+                        _updateFormProvider(ref, 'name', value);
+                      },
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.add_alarm, size: 30),
+                    onPressed: _addNewInterval,
+                  ),
+                ],
+              ),
             ),
-            validator: (value) => TimeblockValidator.isValidName(value),
-            onSaved: (value) {
-              _updateFormProvider(ref, 'name', value);
-            },
-          ),
-          Column(
-            children: intervalInputs.asMap().keys.toList().map((index) {
-              return IntervalInput(
-                intervalSetting: intervalInputs[index],
-                index: index,
-              );
-            }).toList(),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              TextButton(
-                onPressed: form['isLoading']
-                    ? null
-                    : () {
-                        _formKey.currentState!.reset();
-                      },
-                child: const Text('Reset'),
+            Column(
+              children: intervalInputs.asMap().keys.toList().map((index) {
+                return IntervalInput(
+                  intervalSetting: intervalInputs[index],
+                  index: index,
+                );
+              }).toList(),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 12),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed: form['isLoading']
+                        ? null
+                        : () {
+                            _formKey.currentState!.reset();
+                          },
+                    child: const Text('Reset'),
+                  ),
+                  ElevatedButton(
+                    onPressed: form['isLoading']
+                        ? null
+                        : () {
+                            _saveTimeblock(context, ref);
+                          },
+                    child: form['isLoading']
+                        ? const SizedBox(
+                            height: 16,
+                            width: 16,
+                            child: CircularProgressIndicator(),
+                          )
+                        : const Text('Save'),
+                  ),
+                ],
               ),
-              ElevatedButton(
-                onPressed: form['isLoading']
-                    ? null
-                    : () {
-                        _saveTimeblock(context, ref);
-                      },
-                child: form['isLoading']
-                    ? const SizedBox(
-                        height: 16,
-                        width: 16,
-                        child: CircularProgressIndicator(),
-                      )
-                    : const Text('Save'),
-              ),
-            ],
-          ),
-        ],
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -50,6 +50,7 @@ class _IntervalInputState extends State<IntervalInput> {
     ];
 
     return Container(
+      margin: EdgeInsets.all(12),
       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 0),
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(
